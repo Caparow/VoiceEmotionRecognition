@@ -141,7 +141,7 @@ def MFCCAnalyze():
 
 if __name__ == "__main__":
     features = MFCCAnalyze()
-    # Use yout svm here
+    # Use your svm here
     # TrainFilesAdding()
     # Use pickle and extract [sample, features] from features_matrix.dat
     # and to extract [sample] from sample_vector.dat
