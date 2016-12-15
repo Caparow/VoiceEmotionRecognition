@@ -8,6 +8,8 @@ import scipy.io.wavfile as wav
 from sklearn.externals import joblib
 import pyaudio
 import wave
+from os import listdir
+from os.path import isfile, join
 
 #libs for testing
 from sklearn.model_selection import cross_val_score
@@ -137,6 +139,30 @@ def TrainFilesAdding():
                     sample_vector.append("SURPRISE")
 
         print('Features extracted from: ' + path + '\n')
+
+    print('Start extract features from added files')
+    onlyfiles = [f for f in listdir('AudioData/added') if isfile(join('AudioData/added', f))]
+    for file in onlyfiles:
+        mfcc_feat = GetMfccVector('AudioData/added/' + str(file))
+        output_feat = NormAndAverage(mfcc_feat)
+        features_matrix = np.vstack((features_matrix, output_feat))
+
+        if file.startswith('a'):
+            sample_vector.append("ANGRY")
+        elif file.startswith('d'):
+            sample_vector.append("DISGUSTING")
+        elif file.startswith('f'):
+            sample_vector.append("FEAR")
+        elif file.startswith('h'):
+            sample_vector.append("HAPPINESS")
+        elif file.startswith('n'):
+            sample_vector.append("NEUTRAL")
+        elif file.startswith('sa'):
+            sample_vector.append("SADNESS")
+        elif file.startswith('su'):
+            sample_vector.append("SURPRISE")
+
+    print('Features extracted from added files \n')
 
     print('Len of feat matr.= ' + str(len(features_matrix)))
     SaveObj('X.dat', features_matrix)
